@@ -14,6 +14,7 @@
 @synthesize movieNameLabel = _movieNameLabel;
 @synthesize movieDescLabel = _movieDescLabel;
 @synthesize movieImage = _movieImage;
+@synthesize movieCastLabel=_movieCastLabel;
 
 - (void)awakeFromNib
 {
@@ -22,6 +23,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-   }
+   
+}
 
 @end

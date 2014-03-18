@@ -7,8 +7,12 @@
 //
 
 #import "MovieDetailViewController.h"
+#import "MoviesListViewController.h"
 #import "AFNetworking.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
 
 @interface MovieDetailViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *MoviePoster;
@@ -30,11 +34,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Movies" style:UIBarButtonItemStylePlain target:self action:@selector(onBackButton:)];
     if(self.movieDict!=NULL) {
         self.title=[NSString stringWithFormat:@"%@",[self.movieDict objectForKey:@"title"]];
 
-        self.Cast.text = [NSString stringWithFormat:@"%@",[self.movieDict objectForKey:@"synopsis"]];
+        self.Cast.text = [MoviesListViewController getCast:self.movieDict];
+        [self.Cast sizeToFit];
         self.Summary.text = [NSString stringWithFormat:@"%@",[self.movieDict objectForKey:@"synopsis"]];
         [self.MoviePoster setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[self.movieDict objectForKey:@"posters"] objectForKey:@"detailed"]]] placeholderImage:[UIImage imageNamed:@"noImage.png"]];
         

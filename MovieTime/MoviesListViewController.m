@@ -12,9 +12,11 @@
 #import "MovieDetailViewController.h"
 #import "AFNetworking.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "PullRefreshTableViewController.h"
 
 @interface MoviesListViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *MoviesList_VC;
+@property (weak, nonatomic) IBOutlet UIView *NetError;
 @property (strong, nonatomic) NSArray *moviesList;
 
 @end
@@ -33,9 +35,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    self.NetError.alpha=0;
     self.title=@"MoviesList";
     self.moviesList=[[NSArray alloc] init];
+    
+    PullRefreshTableViewController *refreshTableVC = [[PullRefreshTableViewController alloc] init];
+    refreshTableVC.tableView.frame = CGRectMake(0,0,320,300);
     
     UINib *movieCellNib= [UINib nibWithNibName:@"MovieViewCell" bundle:nil];
     [self.MoviesList_VC registerNib:movieCellNib forCellReuseIdentifier:@"MovieViewCell"];
@@ -59,11 +65,17 @@
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        id object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        //NSLog(@"%@", object);
-        self.moviesList=[object objectForKey:@"movies"];
-        //NSLog(@"%@", self.moviesList);
-        [self.MoviesList_VC reloadData];
+        if(connectionError!=NULL) {
+            self.NetError.alpha=1.0;
+            self.view.userInteractionEnabled=NO;
+        }
+        else {
+            id object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            //NSLog(@"%@", object);
+            self.moviesList=[object objectForKey:@"movies"];
+            //NSLog(@"%@", self.moviesList);
+            [self.MoviesList_VC reloadData];
+        }
     }];
 }
 
@@ -74,33 +86,10 @@
     return self.moviesList.count;
     //return moviesListTemp.count;
 }
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *simpleTableIdentifier = @"SimpleTableItem";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"MyIdentifier"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    
-    
-    NSDictionary *tempDictionary= [self.moviesList objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@",[tempDictionary objectForKey:@"title"]];
-    cell.detailTextLabel.text =[NSString stringWithFormat:@"%@",[tempDictionary objectForKey:@"synopsis"]];
-    [cell.imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[tempDictionary objectForKey:@"posters"] objectForKey:@"thumbnail"]]] placeholderImage:[UIImage imageNamed:@"noImage.png"]];
-    
-    //[cell setNeedsLayout];
-    return cell;
-}
-*/
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 100;
+    return 126;
 }
 
 
@@ -120,6 +109,7 @@
     cell.movieNameLabel.text = [NSString stringWithFormat:@"%@",[movie objectForKey:@"title"]];;
     cell.movieDescLabel.text = [NSString stringWithFormat:@"%@",[movie objectForKey:@"synopsis"]];
     [cell.movieImage setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[movie objectForKey:@"posters"] objectForKey:@"thumbnail"]]] placeholderImage:[UIImage imageNamed:@"noImage.png"]];
+    cell.movieCastLabel.text = [MoviesListViewController getCast:movie];
     cell.selected=false;
     //[cell setNeedsLayout];
     return cell;
@@ -131,6 +121,20 @@
     if(detailedView.movieDict!=NULL) {
         [self.navigationController pushViewController:detailedView animated:YES];
     }
+}
+
++(NSString*) getCast: (NSDictionary*)movieDict {
+    NSArray *abridgedCast=[movieDict objectForKey:@"abridged_cast"];
+    NSString *cast = @"";
+    if(abridgedCast!=NULL) {
+        for (NSDictionary *castI in abridgedCast) {
+            cast = [cast stringByAppendingFormat:@"%@, ", [castI objectForKey:@"name"]];
+        }
+    }
+    if ([cast length] > 0) {
+        cast = [cast substringToIndex:[cast length] - 2];
+    }
+    return cast;
 }
 
 

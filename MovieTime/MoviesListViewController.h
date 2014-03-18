@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface MoviesListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
-
++(NSString*) getCast: (NSDictionary*)movieDict;
 @end
