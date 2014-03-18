@@ -18,6 +18,7 @@ PODS:
   - AFNetworking/UIKit (2.2.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - MBProgressHUD (0.8)
   - PullToRefresh (0.0.1)
   - SDWebImage (3.5.4):
     - SDWebImage/Core
@@ -25,11 +26,13 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2.1)
+  - MBProgressHUD (~> 0.8)
   - PullToRefresh (~> 0.0.1)
   - SDWebImage (~> 3.5)
 
 SPEC CHECKSUMS:
   AFNetworking: 0121f4b69be3fa58d1ab317866e036e12ac9651d
+  MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
   PullToRefresh: d296df4515b0d4b1a7be445edbae31fc612c5016
   SDWebImage: 1a62010700adbba823b621fc217906739dbf6aa5
 

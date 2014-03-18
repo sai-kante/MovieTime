@@ -13,6 +13,9 @@
 #import "AFNetworking.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "PullRefreshTableViewController.h"
+#import "MBProgressHUD.h"
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
 
 @interface MoviesListViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *MoviesList_VC;
@@ -24,6 +27,7 @@
 @implementation MoviesListViewController
 {
     UIRefreshControl *refresh;
+    MBProgressHUD *progressHUD;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -38,7 +42,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     self.NetError.alpha=0;
     self.title=@"MoviesList";
     self.moviesList=[[NSArray alloc] init];
@@ -46,6 +52,9 @@
     PullRefreshTableViewController *refreshTableVC = [[PullRefreshTableViewController alloc] init];
     
     refreshTableVC.tableView = self.MoviesList_VC;
+    progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [progressHUD show:YES];
+    
     refresh = [[UIRefreshControl alloc] init];
     refresh.tintColor = [UIColor grayColor];
     refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
@@ -76,10 +85,13 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if(connectionError!=NULL) {
+            [progressHUD hide:YES];
             self.NetError.alpha=1.0;
             self.view.userInteractionEnabled=NO;
+            self.MoviesList_VC.alpha=0;
         }
         else {
+            [progressHUD hide:YES];
             id object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             //NSLog(@"%@", object);
             self.moviesList=[object objectForKey:@"movies"];
