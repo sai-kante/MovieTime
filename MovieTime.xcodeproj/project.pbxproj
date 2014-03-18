@@ -30,8 +30,6 @@
 		EC47033118D6955000EBC2C4 /* MovieDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC47032F18D6955000EBC2C4 /* MovieDetailViewController.xib */; };
 		EC9769C518D7EBA200258A0F /* NetworkErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC9769C318D7EBA200258A0F /* NetworkErrorViewController.m */; };
 		EC9769C618D7EBA200258A0F /* NetworkErrorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9769C418D7EBA200258A0F /* NetworkErrorViewController.xib */; };
-		ECA469C418D83206001A741F /* tempTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA469C218D83206001A741F /* tempTableViewController.m */; };
-		ECA469C518D83206001A741F /* tempTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECA469C318D83206001A741F /* tempTableViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,9 +76,6 @@
 		EC9769C218D7EBA200258A0F /* NetworkErrorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkErrorViewController.h; path = ../NetworkErrorViewController.h; sourceTree = "<group>"; };
 		EC9769C318D7EBA200258A0F /* NetworkErrorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NetworkErrorViewController.m; path = ../NetworkErrorViewController.m; sourceTree = "<group>"; };
 		EC9769C418D7EBA200258A0F /* NetworkErrorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NetworkErrorViewController.xib; path = ../NetworkErrorViewController.xib; sourceTree = "<group>"; };
-		ECA469C118D83206001A741F /* tempTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tempTableViewController.h; sourceTree = "<group>"; };
-		ECA469C218D83206001A741F /* tempTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tempTableViewController.m; sourceTree = "<group>"; };
-		ECA469C318D83206001A741F /* tempTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = tempTableViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,9 +157,6 @@
 				EC47032D18D6955000EBC2C4 /* MovieDetailViewController.h */,
 				EC47032E18D6955000EBC2C4 /* MovieDetailViewController.m */,
 				EC47032F18D6955000EBC2C4 /* MovieDetailViewController.xib */,
-				ECA469C118D83206001A741F /* tempTableViewController.h */,
-				ECA469C218D83206001A741F /* tempTableViewController.m */,
-				ECA469C318D83206001A741F /* tempTableViewController.xib */,
 			);
 			path = MovieTime;
 			sourceTree = "<group>";
@@ -276,7 +268,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC47033118D6955000EBC2C4 /* MovieDetailViewController.xib in Resources */,
-				ECA469C518D83206001A741F /* tempTableViewController.xib in Resources */,
 				EC1E5FC618D553EF00512D11 /* InfoPlist.strings in Resources */,
 				EC9769C618D7EBA200258A0F /* NetworkErrorViewController.xib in Resources */,
 				EC1E5FCE18D553EF00512D11 /* Images.xcassets in Resources */,
@@ -335,7 +326,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC47033018D6955000EBC2C4 /* MovieDetailViewController.m in Sources */,
-				ECA469C418D83206001A741F /* tempTableViewController.m in Sources */,
 				EC1E5FCC18D553EF00512D11 /* AppDelegate.m in Sources */,
 				EC47032818D674AA00EBC2C4 /* MovieViewCell.m in Sources */,
 				EC9769C518D7EBA200258A0F /* NetworkErrorViewController.m in Sources */,

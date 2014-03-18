@@ -22,6 +22,9 @@
 @end
 
 @implementation MoviesListViewController
+{
+    UIRefreshControl *refresh;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,7 +44,14 @@
     self.moviesList=[[NSArray alloc] init];
     
     PullRefreshTableViewController *refreshTableVC = [[PullRefreshTableViewController alloc] init];
-    refreshTableVC.tableView.frame = CGRectMake(0,0,320,300);
+    
+    refreshTableVC.tableView = self.MoviesList_VC;
+    refresh = [[UIRefreshControl alloc] init];
+    refresh.tintColor = [UIColor grayColor];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    [refresh addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
+    
+    refreshTableVC.refreshControl = refresh;
     
     UINib *movieCellNib= [UINib nibWithNibName:@"MovieViewCell" bundle:nil];
     [self.MoviesList_VC registerNib:movieCellNib forCellReuseIdentifier:@"MovieViewCell"];
@@ -122,6 +132,24 @@
         [self.navigationController pushViewController:detailedView animated:YES];
     }
 }
+
+
+- (void)refresh {
+    [self performSelector:@selector(stopLoading) withObject:nil afterDelay:2.0];
+}
+
+-(void)refreshView:(UIRefreshControl *)refreshC {
+    
+    refreshC.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refreshing data..."];
+    
+    // custom refresh logic would be placed here...
+   
+    [self queryMovies];
+    
+    [refreshC endRefreshing];
+    
+}
+
 
 +(NSString*) getCast: (NSDictionary*)movieDict {
     NSArray *abridgedCast=[movieDict objectForKey:@"abridged_cast"];
