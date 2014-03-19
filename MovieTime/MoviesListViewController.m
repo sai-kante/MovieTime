@@ -80,15 +80,15 @@
 }
 - (void) queryMovies
 {
+    [progressHUD show:YES];
     NSString *url = @"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=g9au4hv6khv6wzvzgt55gpqs";
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if(connectionError!=NULL) {
+            [refresh endRefreshing];
             [progressHUD hide:YES];
             self.NetError.alpha=1.0;
-            self.view.userInteractionEnabled=NO;
-            self.MoviesList_VC.alpha=0;
         }
         else {
             [progressHUD hide:YES];
@@ -155,7 +155,7 @@
     refreshC.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refreshing data..."];
     
     // custom refresh logic would be placed here...
-   
+    self.NetError.alpha=0;
     [self queryMovies];
     
     [refreshC endRefreshing];
